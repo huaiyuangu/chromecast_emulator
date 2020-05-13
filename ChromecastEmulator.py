@@ -34,7 +34,7 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
     def open(self, *args, **kwargs):
 
         global CLIENTS_INDEX
-        print 'websocket client connected:', CLIENTS_INDEX, self.request.path
+        print( 'websocket client connected:', CLIENTS_INDEX, self.request.path)
         if self.request.path == '/sender':
             self.write_message({'senderId': self.sender_id})
             HANDLERS[self.sender_id].append(self)
@@ -44,7 +44,7 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
 
-        # print 'ws:\n', message
+        # print( 'ws:\n', message)
         m = json.loads(message)
         data = json.loads(m['data'])
         if 'type' in data:
@@ -52,16 +52,16 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
         elif 'event_type' in data:
             self.handle_app_msg(message, m['senderId'], data['event_type'])
         else:
-            print 'unhandled msg', data
+            print('unhandled msg', data)
 
     def handle_app_msg(self, m, senderId, event_type):
         if self.request.path == '/sender':
             if event_type not in ('start', 'playback_update'):
-                print ('app --> receiver', m)
+                print('app --> receiver', m)
             HANDLERS[senderId][0].write_message(m)
         else:
             if event_type not in ('start', 'playback_update'):
-                print ('receiver --> app:', m)
+                print('receiver --> app:', m)
             HANDLERS[senderId][1].write_message(m)
 
     def handle_platform_msg(self, m, data):
@@ -74,7 +74,7 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
         elif data['type'] == 'sender':
             self.handle_receiver_msg(data)
         else:
-            print 'unknown msg type', data
+            print('unknown msg type', data)
 
     def handle_receiver_msg(self, data):
 
@@ -113,7 +113,7 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
         self.write_message(json.dumps(pong))
 
     def send_status(self):
-        print ("Sending status")
+        print("Sending status")
         data = {'namespace': self.namespace['receiver'], 'data':{
             'status': {'volume': {'muted': False, 'stepInterval': 0.05000000074505806, 'controlType': 'attenuation', 'level': 1.0},
                        'applications': [{'displayName': 'Backdrop', 'statusText': '',
@@ -162,6 +162,7 @@ class MessageHandler(tornado.websocket.WebSocketHandler):
                 "user_token": user_token,
                 "volume": 0
         }
+        }
         self.requestId += 1
         self.write_message({
             'data': json.dumps(start_data),
@@ -204,11 +205,11 @@ class ChromecastRunThread(threading.Thread):
         self.setDaemon(True)
 
     def stop(self):
-        print 'to stop chromecast server....'
+        print('to stop chromecast server....')
         self._stop.set()
 
     def stopped(self):
-        print 'chromecast server stopped!'
+        print('chromecast server stopped!')
         return self._stop.isSet()
 
     def run(self):
@@ -224,7 +225,7 @@ class ChromecastRunThread(threading.Thread):
         ])
         application.listen(8008)
         tornado.ioloop.IOLoop.instance().start()
-        print 'exiting from chromecast running thread...'
+        print('exiting from chromecast running thread...')
 
 
 if __name__ == "__main__":
