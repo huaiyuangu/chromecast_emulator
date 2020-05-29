@@ -1,12 +1,13 @@
 ### Chromecast receiver emulator for google sdk v2
 
+***Note:  This doesn't currently work, please don't get your hopes up :(***
 
 ## Features:
 
 1. python tornado websocket service as chromecast Host
 2. transfer messages between receiver (web app) and sender (mobile)
 
-## expample
+## example
 ```
     from ChromecastEmulator import MessageHandler
     application = tornado.web.Application([
