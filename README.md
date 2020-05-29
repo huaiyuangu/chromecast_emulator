@@ -1,6 +1,6 @@
 ### Chromecast receiver emulator for google sdk v2
 
-***Note:  This doesn't currently work, please don't get your hopes up :(***
+***Note:  This doesn't work, please don't get your hopes up :(***
 
 ## Features:
 
